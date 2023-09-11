@@ -13,7 +13,7 @@ namespace HelloDungeon
         int health = 20;
         bool playerIsAlive = true;
         string input;
-
+        int numberOfAttempts = 4;
         /// <summary>
         /// The starting room where the player gives their name, and has their first encounter.
         /// </summary>
@@ -53,6 +53,7 @@ namespace HelloDungeon
             {
                 //...display text to let the player know that they survived the first room
                 Console.WriteLine("You decide to follow your gut and decline. You move on to the next area.");
+                Console.ReadKey(true);
             }
             //    else
             //    {
@@ -61,6 +62,7 @@ namespace HelloDungeon
             //    }
             //    Console.Clear();
             //}
+            return;
         }
 
         /// <summary>
@@ -68,12 +70,14 @@ namespace HelloDungeon
         /// </summary>
         void Room2()
         {
-            int numberOfAttempts = 4;
+            
             string input = "";
 
             //Loop until the player gets the riddle right or they run out of tries
-            for (int i = 0; i < numberOfAttempts; i--)
+            for (int i = 0; i < numberOfAttempts; i++)
             {
+                
+                
                 Console.Clear();
 
 
@@ -93,7 +97,7 @@ namespace HelloDungeon
                 Console.WriteLine("What has to be broken before you can use it?");
 
                 //Store the amount of attempts the player has remaining
-                int attemptsRemaining = numberOfAttempts + i;
+                int attemptsRemaining = numberOfAttempts - i;
 
                 //Displays the remaining number of attempts
                 Console.WriteLine("Attempts Remaining: " + attemptsRemaining);
@@ -103,33 +107,37 @@ namespace HelloDungeon
                 input = Console.ReadLine();
 
                 //If the player answered correctly...
-                if (input == "egg")
+                
+                if (input == "egg" || input == "EGG" || input == "eggs" || input == "EGGS")
                 {
                     //...print text for feedback and break the loop
                     Console.WriteLine("Congrats! You've gained immortality!");
-                    Console.ReadKey();
-                    //break;
+                    Console.ReadKey(true);
+                    i = 5;
+                    
                 }
                 //If the player doesn't answer correctly deal damage to them
-                else if (input != "egg")
+                else if (input != "egg" || input != "EGG" || input != "eggs" || input != "EGGS")
                 {
                     Console.WriteLine("Incorrect! The monkey laughs at you! It hurts..." +
                         "you take 5 points of damage.");
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     health -= 5;
+                    
                 }
 
                 //If the player has died after guessing
-                else if (health <= 0)
+                if (health == 0)
                 {
                     //...update the player state and print player feedback to the screen
                     playerIsAlive = false;
                     Console.WriteLine("You died...");
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     Console.Clear();
                 }
 
             }
+            return ;
         }
 
         /// <summary>
@@ -147,6 +155,7 @@ namespace HelloDungeon
                 currentArea = 1;
                 gameOver = false;
                 playerIsAlive = true;
+                health = 20;
             }
             //Otherwise if the player wants to quit...
             else if (input == "2")
@@ -197,7 +206,7 @@ namespace HelloDungeon
                     inputReceived = "1";
                 }
                 //Otherwise if the player selected the second option...
-                if (input == "2")
+                else if (input == "2")
                 {
                     //Set input received to be the second option
                     inputReceived = "2";
@@ -208,11 +217,12 @@ namespace HelloDungeon
                     //...display error message
                     Console.WriteLine("Invalid Input");
                     Console.ReadKey(true);
+                    Console.Clear();
                 }
 
-                Console.Clear();
+                
             }
-
+            Console.Clear();
             return inputReceived;
         }
 
@@ -222,15 +232,15 @@ namespace HelloDungeon
             while (gameOver==false)
             {
                 //Print the current room to the screen
-                if (currentArea >= 1)
+                if (currentArea == 1)
                 {
                     Room1();
                 }
-                else if (currentArea >= 2)
+                else if (currentArea == 2)
                 {
                     Room2();
                 }
-                else if (currentArea >= 3)
+                else if (currentArea == 3)
                 {
                     Room3();
                 }
